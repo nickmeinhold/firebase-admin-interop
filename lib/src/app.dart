@@ -11,6 +11,7 @@ import 'auth.dart';
 import 'bindings.dart' as js;
 import 'database.dart';
 import 'firestore.dart';
+import 'storage.dart';
 
 /// Represents initialized Firebase application and provides access to the
 /// app's services.
@@ -44,4 +45,8 @@ class App {
   /// Renders this app unusable and frees the resources of all associated
   /// services.
   Future<void> delete() => promiseToFuture<void>(nativeInstance.delete());
+
+  /// Gets the [Storage] client for this application.
+  Storage storage() => _storage ??= Storage(nativeInstance.storage());
+  Storage _storage;
 }

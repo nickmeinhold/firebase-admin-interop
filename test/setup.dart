@@ -22,6 +22,7 @@ App initFirebaseApp() {
   );
   final Map config = jsonDecode(env['FIREBASE_CONFIG']);
   final databaseUrl = config['databaseURL'];
+  final storageBucket = config['storageBucket'];
   return FirebaseAdmin.instance.initializeApp(
-      new AppOptions(credential: cert, databaseURL: databaseUrl));
+      new AppOptions(credential: cert, databaseURL: databaseUrl, storageBucket: storageBucket));
 }

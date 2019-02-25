@@ -3,6 +3,7 @@ library firebase_storage;
 
 import "package:js/js.dart";
 import 'package:node_interop/node.dart';
+import 'package:node_interop/stream.dart';
 
 import 'bindings.dart';
 
@@ -120,4 +121,47 @@ abstract class StorageFileOptions {
 
 @JS()
 @anonymous
-abstract class StorageFile {}
+abstract class StorageFile {
+
+  external Promise delete([options, callback]);
+
+  // returns stream.Readable 
+  external Readable createReadStream([CreateReadStreamOptions options]);
+  
+  // returns stream.Writable 
+  external Writable createWriteStream([CreateReadStreamOptions options]);
+}
+
+@JS()
+@anonymous
+abstract class CreateReadStreamOptions {
+  external String get userProject;
+  external Object get validation; // 'md5'|'crc32c'|false|true
+  external num get start;
+  external num get end;
+
+  external factory CreateReadStreamOptions({String userProject, Object validation, num start, num end});  
+}
+
+@JS()
+@anonymous
+abstract class CreateWriteStreamOptions {
+  external String get contentType;
+  external Object get gzip; // string|boolean
+  external bool get resumable;
+  external Object get validation; // string|boolean
+
+  external factory CreateWriteStreamOptions({String contentType, Object gzip, bool resumable, Object validation});
+}
+
+
+
+
+@JS()
+@anonymous
+abstract class DeleteFileResponse {
+  external factory DeleteFileResponse();
+
+  external int get statusCode;
+}
+

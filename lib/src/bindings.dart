@@ -7,8 +7,10 @@ import 'package:js/js.dart';
 import 'package:node_interop/node.dart';
 
 import 'firestore_bindings.dart' show Firestore, GeoPointUtil, FieldValues;
+import 'storage_bindings.dart' show Storage;
 
 export 'firestore_bindings.dart';
+export 'storage_bindings.dart';
 
 // admin =========================================================================
 
@@ -46,6 +48,9 @@ abstract class FirebaseAdmin {
 
   /// Gets the [Firestore] client for the default app or a given [app].
   external FirestoreService get firestore;
+
+  /// Gets the [Storage] client for the default app or a given [app].
+  external StorageService get storage;
 
   external Credentials get credential;
 }
@@ -156,6 +161,9 @@ abstract class App {
 
   /// Gets the [Firestore] client for this app.
   external Firestore firestore();
+
+  /// Gets the [Storage] client for this app.
+  external Storage storage();
 }
 
 /// Available options to pass to [initializeApp].
@@ -534,6 +542,14 @@ abstract class FirestoreService {
   external FieldValues get FieldValue;
   external dynamic get Timestamp;
   external dynamic get FieldPath;
+}
+
+// admin.storage ===============================================================
+
+@JS()
+@anonymous
+abstract class StorageService {
+  external dynamic get Bucket;
 }
 
 // admin.database ================================================================
