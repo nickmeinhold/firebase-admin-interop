@@ -36,7 +36,7 @@ class Bucket {
   //   - https://github.com/matanlurey/dart_js_interop#generic-type-arguments
   // use from rather than retype or cast: https://github.com/dart-lang/site-www/issues/736#issuecomment-383208294
   //   - anyway looks like retype has replaced cast and cast has been removed (read further down in above link) 
-  Future<List<bool>>  exists() {
+  Future<List<bool>> exists() {
     return promiseToFuture<List<dynamic>>(nativeInstance.exists()).then((val) => List<bool>.from(val));
   }
 
@@ -57,8 +57,14 @@ class File {
   @protected
   final js.StorageFile nativeInstance;
 
-  Future<List<js.DeleteFileResponse>> delete() {
-    return promiseToFuture<List<dynamic>>(nativeInstance.delete()).then((val) => List<js.DeleteFileResponse>.from(val));
+  Future<List<bool>> exists() {
+    return promiseToFuture<List<dynamic>>(nativeInstance.exists()).then((val) => List<bool>.from(val));
+  }
+
+  // I have attempted to provide the response in a form as close to the js lib as possible 
+  // The Response object has minimal members mapped, but returning a List (array) of Response objects is what the js lib does 
+  Future<List<js.Response>> delete() {
+    return promiseToFuture<List<dynamic>>(nativeInstance.delete()).then((val) => List<js.Response>.from(val));
   }
 
   // need to add CreateWriteStreamOptions 

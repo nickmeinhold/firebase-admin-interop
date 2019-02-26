@@ -1,5 +1,4 @@
 @TestOn('node')
-import 'dart:async';
 import 'package:firebase_admin_interop/firebase_admin_interop.dart';
 import 'package:node_interop/fs.dart';
 import 'package:test/test.dart';
@@ -30,17 +29,32 @@ void main() {
     });
 
     test('deleteFile', () async {
-      try {
-        var result = await app.storage().bucket("crowdleaguetest.appspot.com").file("test.jpg").delete();
-        print(result.elementAt(1).statusCode);
-        expect(false, false); 
+      
+      print("creating File object with name: 'test.jpg'"); 
+      File file = app.storage().bucket("crowdleaguetest.appspot.com").file("test.jpg");
+
+      print("checking if file already exists...");
+      List<bool> existsList = await file.exists();
+      if(!existsList.elementAt(0)) {
+        print("file does not exist, uploading...");
+        // upload a file for deletion 
+        var readable = fs.createReadStream('/Users/nick/Desktop/test.jpg');
+        await file.upload(readable);
+        print("uploaded.");
       }
-      catch(e) {
-        print(e);
-        expect(false, false); 
+      else {
+        print("file already exists, no need to upload.");
       }
+      
+      print("attempting delete..."); 
+      var result = await app.storage().bucket("crowdleaguetest.appspot.com").file("test.jpg").delete();
+      var response = result.elementAt(1);
+      print("deleted.");
+      expect(response.statusCode, 204);
 
     });
+
+    // TODO: test what happens under various error scenarios (eg for delete) - is the error in the Response object or thrown? 
 
     test('checkBucketExists', () async {
 

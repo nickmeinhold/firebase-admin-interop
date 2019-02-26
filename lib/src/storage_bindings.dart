@@ -123,6 +123,7 @@ abstract class StorageFileOptions {
 @anonymous
 abstract class StorageFile {
 
+  external Promise exists([options, callback]);
   external Promise delete([options, callback]);
 
   // returns stream.Readable 
@@ -154,14 +155,15 @@ abstract class CreateWriteStreamOptions {
   external factory CreateWriteStreamOptions({String contentType, Object gzip, bool resumable, Object validation});
 }
 
-
-
-
+// this was an attempt to match the "request" lib's Response object, which is used in the response of many of the API calls 
+// TODO: see if the request lib's Response object is dealt with elsewhere in this package
+// TODO: consider adding the request lib to node_interop 
 @JS()
 @anonymous
-abstract class DeleteFileResponse {
-  external factory DeleteFileResponse();
+abstract class Response {
+  external factory Response();
 
   external int get statusCode;
+  external String get statusMessage;
+  external dynamic get body;
 }
-
